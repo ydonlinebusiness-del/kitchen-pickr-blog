@@ -34,10 +34,10 @@ jobs:
             "https://api.cloudflare.com/client/v4/accounts/5e006580df15d589b24fa8d8338cb58d/pages/projects" \
             -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             -H "Content-Type: application/json" \
-            -d '{"name":"deco-pickr-blog","production_branch":"master"}' || true
+            -d '{"name":"kitchen-pickr-blog","production_branch":"master"}' || true
 
       - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: 5e006580df15d589b24fa8d8338cb58d
-        run: npx wrangler pages deploy dist --project-name deco-pickr-blog --commit-dirty=true
+        run: npx wrangler pages deploy dist --project-name kitchen-pickr-blog --commit-dirty=true
