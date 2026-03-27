@@ -1,0 +1,203 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const featured = posts[0];
+const recentPosts = posts.slice(1, 7);
+
+const categoryColors: Record<string, string> = {
+	'Buying Guide': 'linear-gradient(135deg, #c0622f 0%, #fb923c 100%)',
+	'Review': 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
+	'Comparison': 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+	'Tips & Tricks': 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+};
+const defaultGradient = 'linear-gradient(135deg, #c0622f 0%, #fb923c 100%)';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main class="max-w-[1080px] mx-auto px-6 py-8 pb-20">
+
+			<!-- Hero -->
+			<section class="hero-section text-center py-16 px-6 max-w-[680px] mx-auto relative">
+				<div class="inline-flex items-center gap-2 bg-[#fdf3ee] text-[#8f3e1a] border border-[#f0c4a8] px-4 py-1.5 rounded-full text-[0.78rem] font-semibold tracking-wide mb-6">
+					<span class="badge-dot" aria-hidden="true"></span>
+					Curated kitchen & cooking gear picks
+				</div>
+				<h1 class="text-[3.1rem] leading-[1.1] font-extrabold text-[#0f172a] tracking-[-0.035em] mb-4">
+					The Kitchen You Deserve,<br/><span class="text-[#c0622f]">Equipped With Confidence</span>
+				</h1>
+				<p class="text-[1.05rem] text-[#64748b] leading-relaxed mb-7 max-w-[520px] mx-auto">
+					In-depth buying guides and honest reviews for espresso machines, stand mixers, air fryers, and more — so every meal starts right.
+				</p>
+				<div class="flex gap-4 justify-center flex-wrap mb-7">
+					<a href="/blog" class="bg-[#c0622f] text-white px-7 py-3 rounded-[10px] font-bold text-[0.95rem] no-underline transition-all duration-200 shadow-[0_2px_8px_rgba(90,138,106,0.35)] hover:bg-[#8f3e1a] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(90,138,106,0.4)]">
+						Browse All Guides →
+					</a>
+				</div>
+				<div class="flex items-center justify-center gap-2.5 flex-wrap">
+					<span class="inline-flex items-center gap-1 text-[0.78rem] text-[#64748b] font-medium">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c0622f" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+						No sponsored content
+					</span>
+					<span class="text-[#cbd5e1]">·</span>
+					<span class="inline-flex items-center gap-1 text-[0.78rem] text-[#64748b] font-medium">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c0622f" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+						Real product specs
+					</span>
+					<span class="text-[#cbd5e1]">·</span>
+					<span class="inline-flex items-center gap-1 text-[0.78rem] text-[#64748b] font-medium">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c0622f" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+						Current prices
+					</span>
+				</div>
+
+				<!-- Stats bar -->
+				<div class="flex items-center justify-center mt-10 bg-white border border-[#e2e8f0] rounded-2xl px-6 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.06)] max-w-[420px] mx-auto">
+					<div class="flex flex-col items-center flex-1 gap-0.5">
+						<span class="text-[1.4rem] font-extrabold text-[#0f172a] tracking-tight leading-none">{posts.length}+</span>
+						<span class="text-[0.68rem] text-[#94a3b8] font-medium uppercase tracking-wider">Kitchen Guides</span>
+					</div>
+					<div class="w-px h-8 bg-[#e2e8f0] shrink-0"></div>
+					<div class="flex flex-col items-center flex-1 gap-0.5">
+						<span class="text-[1.4rem] font-extrabold text-[#0f172a] tracking-tight leading-none">5×</span>
+						<span class="text-[0.68rem] text-[#94a3b8] font-medium uppercase tracking-wider">Per Week</span>
+					</div>
+					<div class="w-px h-8 bg-[#e2e8f0] shrink-0"></div>
+					<div class="flex flex-col items-center flex-1 gap-0.5">
+						<span class="text-[1.4rem] font-extrabold text-[#0f172a] tracking-tight leading-none">100%</span>
+						<span class="text-[0.68rem] text-[#94a3b8] font-medium uppercase tracking-wider">Free to Read</span>
+					</div>
+				</div>
+			</section>
+
+			<!-- Featured post -->
+			{featured && (
+				<section class="mb-14">
+					<div class="flex items-center justify-between mb-5">
+						<h2 class="text-[0.78rem] font-bold uppercase tracking-[0.12em] text-[#94a3b8] m-0 pl-3.5 border-l-[3px] border-[#c0622f]">Featured Guide</h2>
+					</div>
+					<a href={`/blog/${featured.id}`} class="group grid lg:grid-cols-[420px_1fr] border border-[#e2e8f0] rounded-2xl overflow-hidden no-underline text-inherit bg-white transition-all duration-200 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_6px_rgba(0,0,0,0.05),0_16px_40px_rgba(0,0,0,0.12)] hover:-translate-y-[3px] hover:border-[#c0622f]">
+						<div
+							class="relative min-h-[260px] flex items-center justify-center overflow-hidden"
+							style={`background: ${categoryColors[featured.data.category ?? ''] ?? defaultGradient}`}
+						>
+							{featured.data.heroImage ? (
+								<img src={featured.data.heroImage.src} alt={featured.data.title} class="w-full h-full object-cover block rounded-none" loading="eager" />
+							) : (
+								<div class="flex flex-col items-center gap-2.5">
+									<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+									<span class="text-white/70 text-[0.72rem] font-bold uppercase tracking-[0.12em]">{featured.data.category ?? 'Guide'}</span>
+								</div>
+							)}
+						</div>
+						<div class="p-9 flex flex-col justify-center gap-3">
+							<h3 class="text-2xl m-0 leading-snug text-[#0f172a] font-bold">{featured.data.title}</h3>
+							<p class="text-[#64748b] text-[0.92rem] leading-relaxed m-0">{featured.data.description}</p>
+							<div class="flex items-center justify-between mt-2">
+								<span class="text-[#94a3b8] text-[0.8rem]"><FormattedDate date={featured.data.pubDate} /></span>
+								<span class="text-[#c0622f] text-[0.88rem] font-semibold">Read guide →</span>
+							</div>
+						</div>
+					</a>
+				</section>
+			)}
+
+			<!-- Recent posts -->
+			{recentPosts.length > 0 && (
+				<section class="mb-10">
+					<div class="flex items-center justify-between mb-5">
+						<h2 class="text-[0.78rem] font-bold uppercase tracking-[0.12em] text-[#94a3b8] m-0 pl-3.5 border-l-[3px] border-[#c0622f]">Latest Reviews & Guides</h2>
+					</div>
+					<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 list-none p-0 m-0">
+						{recentPosts.map((post) => (
+							<li class="group bg-white border border-[#e2e8f0] rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_4px_6px_rgba(0,0,0,0.05),0_12px_28px_rgba(0,0,0,0.11)] hover:border-[#c0622f] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_2px_8px_rgba(0,0,0,0.05)] cursor-pointer">
+								<a href={`/blog/${post.id}`} class="flex flex-col h-full no-underline text-inherit">
+									{post.data.heroImage ? (
+										<img src={post.data.heroImage.src} alt={post.data.title} class="w-full h-40 object-cover block rounded-none" loading="lazy" />
+									) : (
+										<div
+											class="w-full h-40 flex items-center justify-center"
+											style={`background: ${categoryColors[post.data.category ?? ''] ?? defaultGradient}`}
+										>
+											<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+										</div>
+									)}
+									<div class="p-4 flex flex-col flex-1 gap-1.5">
+										<h3 class="text-[0.95rem] m-0 leading-snug text-[#0f172a] font-bold line-clamp-2">{post.data.title}</h3>
+										<p class="text-[0.8rem] text-[#64748b] m-0 flex-1 line-clamp-2 leading-relaxed">{post.data.description}</p>
+										<time class="text-[0.73rem] text-[#94a3b8] mt-1"><FormattedDate date={post.data.pubDate} /></time>
+									</div>
+								</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)}
+
+			<div class="text-center mt-8">
+				<a href="/blog" class="inline-block border-2 border-[#c0622f] text-[#c0622f] px-7 py-2.5 rounded-lg font-bold text-[0.92rem] no-underline transition-all duration-200 hover:bg-[#c0622f] hover:text-white hover:-translate-y-px">
+					View all articles →
+				</a>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	/* Dot-grid + glow pseudo-elements (cannot be done with Tailwind) */
+	.hero-section::before {
+		content: '';
+		position: absolute;
+		inset: -2rem -4rem;
+		background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
+		background-size: 24px 24px;
+		opacity: 0.45;
+		pointer-events: none;
+		z-index: -1;
+		border-radius: 24px;
+	}
+	.hero-section::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(249,115,22,0.07) 0%, transparent 70%);
+		pointer-events: none;
+		z-index: -1;
+	}
+	/* Pulsing badge dot */
+	.badge-dot {
+		display: inline-block;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: #c0622f;
+		flex-shrink: 0;
+		animation: pulse-dot 2s ease-in-out infinite;
+	}
+	@keyframes pulse-dot {
+		0%, 100% { transform: scale(1); opacity: 1; }
+		50% { transform: scale(1.4); opacity: 0.7; }
+	}
+	/* Responsive hero title */
+	@media (max-width: 900px) {
+		h1 { font-size: 2.2rem !important; }
+	}
+	@media (max-width: 560px) {
+		h1 { font-size: 1.85rem !important; }
+	}
+</style>

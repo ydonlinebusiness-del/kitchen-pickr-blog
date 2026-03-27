@@ -1,0 +1,30 @@
+---
+import { SITE_TITLE } from '../consts';
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header class="sticky top-0 z-[100] px-6 bg-white/95 backdrop-blur-sm border-b border-[#e8ecf0] shadow-[0_1px_4px_rgba(0,0,0,0.04)] header-accent">
+	<nav class="flex items-center justify-between max-w-[1000px] mx-auto h-[60px]">
+		<a href="/" class="flex items-center gap-1.5 no-underline text-[#0f1219] font-extrabold text-[1.15rem] tracking-tight" aria-label={`${SITE_TITLE} - Home`}>
+			<span class="text-[1.3rem]">🍳</span>
+			<span>{SITE_TITLE}</span>
+		</a>
+		<div class="flex items-center gap-1">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/blog">All Reviews</HeaderLink>
+		</div>
+	</nav>
+</header>
+
+<style>
+	/* Warm copper accent line at very top */
+	.header-accent::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 40%;
+		height: 2px;
+		background: linear-gradient(90deg, #c0622f, transparent);
+	}
+</style>
